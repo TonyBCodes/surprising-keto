@@ -136,7 +136,7 @@ async function footerSubscribe() {
 /* ---------- Supabase Integration ---------- */
 // Replace these with your actual Supabase project URL and anon key after setup
 const SUPABASE_URL  = 'https://oukuxzpnqhijhfqxidhw.supabase.co';
-const SUPABASE_ANON = 'sb_publishable_ElX8sQBUP94GvEwvxg8DuA_NQDeF4kn';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91a3V4enBucWhpamhmcXhpZGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MzI1MTEsImV4cCI6MjA5MjIwODUxMX0.wMaWAKcTXyvHWv4ZpxlwQGZ2ZvTrLu8uiVsM2Pijhy0';
 
 async function supabaseFetch(path, options = {}) {
   const url = `${SUPABASE_URL}/rest/v1/${path}`;
