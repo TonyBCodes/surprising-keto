@@ -135,8 +135,8 @@ async function footerSubscribe() {
 
 /* ---------- Supabase Integration ---------- */
 // Replace these with your actual Supabase project URL and anon key after setup
-const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL  = 'https://oukuxzpnqhijhfqxidhw.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_ElX8sQBUP94GvEwvxg8DuA_NQDeF4kn';
 
 async function supabaseFetch(path, options = {}) {
   const url = `${SUPABASE_URL}/rest/v1/${path}`;
