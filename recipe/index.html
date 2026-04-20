@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Recipe — The Surprising Keto Journey</title>
+  <meta name="description" id="pageDesc" content="Keto recipe from The Surprising Keto Journey">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container">
+  <div id="recipeContent" style="padding:2rem 0;"></div>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/data.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  renderNav('Recipes');
+  renderFooter();
+
+  const id = getParam('id');
+  const r  = RECIPES.find(x => x.id === id);
+
+  if (!r) {
+    document.getElementById('recipeContent').innerHTML = `
+      <div style="text-align:center;padding:4rem 0;">
+        <h2>Recipe not found</h2>
+        <p>This recipe may have moved or the link is incorrect.</p>
+        <a href="/recipes/" class="btn btn-outline" style="margin-top:1rem;">Browse all recipes</a>
+      </div>
+    `;
+  } else {
+    document.title = `${r.title} — The Surprising Keto Journey`;
+    document.getElementById('pageDesc').content = r.description;
+
+    const methods    = Object.keys(r.steps || {});
+    const firstMeth  = methods[0] || '';
+    const yeastAlert = r.yeast_flag ? `<span class="badge badge-yeast" style="font-size:0.75rem;padding:4px 10px;">&#9888; ${r.yeast_note || 'Verify label for yeast extract'}</span>` : '';
+
+    /* Method tabs */
+    const tabs = methods.map((m, i) => `
+      <div class="method-tab ${i === 0 ? 'active' : ''}" onclick="setMethod('${m}',this)">${m}</div>
+    `).join('');
+
+    /* Steps per method */
+    const stepPanels = methods.map((m, i) => {
+      const steps = (r.steps[m] || []).map((s, idx) => `
+        <li class="step-item">
+          <div class="step-num">${idx + 1}</div>
+          <div class="step-text">${s}</div>
+        </li>
+      `).join('');
+      return `<div id="steps_${m.replace(/\s/g,'_')}" class="method-content ${i === 0 ? 'active' : ''}"><ol class="step-list">${steps}</ol></div>`;
+    }).join('');
+
+    /* Ingredients */
+    const ings = (r.ingredients || []).map(ing => `
+      <li>
+        ${ing.qty ? `<strong>${ing.qty}</strong> ` : ''}${ing.item}
+        ${ing.source ? `<span class="ing-source">${ing.source}</span>` : ''}
+      </li>
+    `).join('');
+
+    /* Substitutes */
+    const subs = (r.substitutes || []).map(s => `
+      <div class="sub-item">
+        <div class="sub-ing">${s.ingredient}</div>
+        <div class="sub-alt">${s.alt}</div>
+        ${s.store ? `<div class="sub-store">${s.store}</div>` : ''}
+      </div>
+    `).join('');
+
+    const subsSection = subs ? `
+      <button class="cant-find-btn" onclick="toggleSubs(this)" id="cfBtn">
+        Can't find an ingredient?
+        <span class="cf-arrow">&#9660;</span>
+      </button>
+      <div class="cant-find-panel" id="cfPanel">
+        ${subs}
+        <div class="store-tip">
+          Not sure where to find specialty ingredients? Search Google for <strong>"[ingredient] near me"</strong> or <strong>"Asian grocery [your city]"</strong> or <strong>"fish market [your city]"</strong>. Warehouse clubs (Costco, Sam's Club, BJ's) are great for oils, proteins, and pantry items in bulk.
+        </div>
+      </div>
+    ` : '';
+
+    /* Carb table */
+    const carbRows = (r.carb_breakdown || []).map((c, i) => {
+      const isTotal = i === (r.carb_breakdown.length - 1);
+      return `<tr class="${isTotal ? 'total' : ''}"><td>${c.item}</td><td>${c.carbs}</td></tr>`;
+    }).join('');
+
+    /* Notes */
+    const notes = (r.notes || []).map(n => `
+      <div class="note-item"><div class="note-dot"></div><div>${n}</div></div>
+    `).join('');
+
+    /* Sides */
+    const sides = (r.sides || []).length ? `
+      <hr class="divider">
+      <div class="col-head" style="margin-bottom:0.75rem;">Pairs well with</div>
+      <div class="sides-row">
+        ${r.sides.map(s => `<a href="/recipes/?q=${encodeURIComponent(s)}" class="side-chip">${s}</a>`).join('')}
+      </div>
+    ` : '';
+
+    document.getElementById('recipeContent').innerHTML = `
+      <a href="/recipes/" class="back-link">&#8592; All recipes</a>
+
+      <div class="recipe-detail-header">
+        <div class="tag-row" style="margin-bottom:8px;">
+          <span class="badge badge-cuisine">${r.cuisine}</span>
+          ${r.protein ? `<span class="badge badge-method">${r.protein}</span>` : ''}
+          <span class="badge badge-gray">${r.time}</span>
+          <span class="badge badge-gray">${r.skill}</span>
+        </div>
+        <h1 style="margin-bottom:0.5rem;">${r.title}</h1>
+        <p class="lead" style="margin-bottom:0.75rem;">${r.description}</p>
+        ${yeastAlert}
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="s-label">Net carbs</div><div class="s-val green">${r.net_carbs}</div></div>
+        <div class="stat-card"><div class="s-label">Protein</div><div class="s-val">${r.protein_g}</div></div>
+        <div class="stat-card"><div class="s-label">Serves</div><div class="s-val">${r.serves}</div></div>
+        <div class="stat-card"><div class="s-label">Methods</div><div class="s-val" style="font-size:0.95rem;">${methods.join(', ')}</div></div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Ad slot (in-content rectangle) -->
+      <div class="ad-slot" style="margin-bottom:1.5rem;">
+        <!-- Google AdSense medium rectangle (300x250) — insert code after approval -->
+        Advertisement
+      </div>
+
+      <div class="col-head" style="margin-bottom:0.75rem;">Choose your cooking method</div>
+      <div class="method-tabs">${tabs}</div>
+
+      <div class="two-col">
+        <div>
+          <div class="col-head">Ingredients</div>
+          <ul class="ing-list">${ings}</ul>
+          ${subsSection}
+        </div>
+        <div>
+          <div class="col-head" id="methodLabel">Method — ${firstMeth}</div>
+          ${stepPanels}
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="col-head" style="margin-bottom:0.75rem;">Carb breakdown</div>
+      <table class="carb-table">
+        <thead><tr><th>Ingredient</th><th>Net carbs</th></tr></thead>
+        <tbody>${carbRows}</tbody>
+      </table>
+
+      ${notes ? `<hr class="divider"><div class="col-head" style="margin-bottom:0.75rem;">Notes</div><div class="notes-box">${notes}</div>` : ''}
+
+      ${sides}
+
+      <div id="recipeSubscribe" style="margin-top:2rem;"></div>
+    `;
+
+    renderSubscribeInline('recipeSubscribe', 'recipe');
+  }
+
+  /* Method tab switcher */
+  function setMethod(method, el) {
+    document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.method-content').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const safeKey = method.replace(/\s/g, '_');
+    const panel   = document.getElementById(`steps_${safeKey}`);
+    if (panel) panel.classList.add('active');
+    document.getElementById('methodLabel').textContent = `Method — ${method}`;
+  }
+
+  /* Substitutes toggle */
+  function toggleSubs(btn) {
+    const panel = document.getElementById('cfPanel');
+    btn.classList.toggle('open');
+    panel.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

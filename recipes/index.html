@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipes — The Surprising Keto Journey</title>
+  <meta name="description" content="Browse 160+ keto recipes across African, Mediterranean, Cajun, Soul Food, and BBQ cuisines. Filter by meal type, cuisine, protein, cooking method, and time.">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container">
+  <div class="page-header">
+    <div class="section-label">160+ recipes</div>
+    <h1>Find your next meal</h1>
+    <p class="lead">Filter by what you're cooking, what you have, or how much time you've got.</p>
+  </div>
+
+  <!-- Meal type pills -->
+  <div class="section-label" style="margin-bottom:0.4rem;">Meal type</div>
+  <div class="pill-row" id="catPills">
+    <div class="pill active" data-cat="All" onclick="setCat(this)">All</div>
+    <div class="pill" data-cat="Breakfast" onclick="setCat(this)">Breakfast</div>
+    <div class="pill" data-cat="Lunch" onclick="setCat(this)">Lunch</div>
+    <div class="pill" data-cat="Dinner" onclick="setCat(this)">Dinner</div>
+    <div class="pill" data-cat="Brunch" onclick="setCat(this)">Brunch</div>
+    <div class="pill" data-cat="Snacks" onclick="setCat(this)">Snacks</div>
+    <div class="pill" data-cat="Sides" onclick="setCat(this)">Sides</div>
+    <div class="pill" data-cat="Sauces" onclick="setCat(this)">Sauces</div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Protein</label>
+        <select id="selProtein" onchange="renderResults()">
+          <option value="">Any protein</option>
+          <option>Fish</option><option>Lamb</option><option>Chicken</option>
+          <option>Pork</option><option>Beef</option><option>Shellfish</option><option>Eggs</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Cuisine</label>
+        <select id="selCuisine" onchange="renderResults()">
+          <option value="">Any cuisine</option>
+          <option>Mediterranean</option><option>West African</option><option>East African</option>
+          <option>North African</option><option>Cajun / Creole</option><option>Soul Food</option>
+          <option>BBQ</option><option>Greek</option><option>Spanish</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Cooking method</label>
+        <select id="selMethod" onchange="renderResults()">
+          <option value="">Any method</option>
+          <option>Grill</option><option>Smoker</option><option>Oven</option>
+          <option>Slow cooker</option><option>Pressure cooker</option><option>Stovetop</option><option>No cook</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Time</label>
+        <select id="selTime" onchange="renderResults()">
+          <option value="">Any time</option>
+          <option>Under 30 min</option><option>30–60 min</option><option>Weekend project</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button class="btn btn-ghost btn-sm" onclick="resetFilters()">Clear filters</button>
+      </div>
+    </div>
+
+    <div style="margin-top:0.875rem;border-top:1px solid var(--border);padding-top:0.875rem;">
+      <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:0.4rem;">Ingredient on hand</div>
+      <div class="ing-chips" id="ingChips">
+        <div class="ing-chip" onclick="toggleIng(this)">eggplant</div>
+        <div class="ing-chip" onclick="toggleIng(this)">cauliflower</div>
+        <div class="ing-chip" onclick="toggleIng(this)">shrimp</div>
+        <div class="ing-chip" onclick="toggleIng(this)">lamb</div>
+        <div class="ing-chip" onclick="toggleIng(this)">oxtail</div>
+        <div class="ing-chip" onclick="toggleIng(this)">spinach</div>
+        <div class="ing-chip" onclick="toggleIng(this)">chicken</div>
+        <div class="ing-chip" onclick="toggleIng(this)">eggs</div>
+        <div class="ing-chip" onclick="toggleIng(this)">pork</div>
+        <div class="ing-chip" onclick="toggleIng(this)">salmon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad slot -->
+  <div class="ad-slot" style="margin-bottom:1.25rem;">
+    <!-- Google AdSense leaderboard — insert code after approval -->
+    Advertisement
+  </div>
+
+  <!-- Results header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <div id="resultsCount" style="font-size:0.85rem;color:var(--text-muted);"></div>
+    <div style="font-size:0.78rem;color:var(--text-muted);">sorted by net carbs: low to high</div>
+  </div>
+
+  <!-- Results grid -->
+  <div class="recipe-grid" id="resultsGrid"></div>
+
+  <div id="noResults" style="display:none;text-align:center;padding:3rem 0;color:var(--text-muted);">
+    <div style="font-size:1.25rem;margin-bottom:0.5rem;">No recipes match those filters</div>
+    <div style="font-size:0.9rem;">Try broadening your selection or <button class="btn btn-ghost btn-sm" onclick="resetFilters()">clear all filters</button></div>
+  </div>
+
+  <!-- Subscribe -->
+  <div id="recipesSubscribe" style="margin-top:2rem;"></div>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/data.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  renderNav('Recipes');
+  renderFooter();
+  renderSubscribeInline('recipesSubscribe', 'recipes');
+
+  let activeCat = 'All';
+
+  /* Check URL params on load */
+  const paramCat     = getParam('cat');
+  const paramCuisine = getParam('cuisine');
+  if (paramCat) {
+    activeCat = paramCat;
+    document.querySelectorAll('.pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.cat === paramCat);
+    });
+  }
+  if (paramCuisine) {
+    document.getElementById('selCuisine').value = paramCuisine;
+  }
+
+  function setCat(el) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeCat = el.dataset.cat;
+    renderResults();
+  }
+
+  function toggleIng(el) { el.classList.toggle('sel'); renderResults(); }
+
+  function resetFilters() {
+    activeCat = 'All';
+    document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.cat === 'All'));
+    ['selProtein','selCuisine','selMethod','selTime'].forEach(id => document.getElementById(id).value = '');
+    document.querySelectorAll('.ing-chip').forEach(c => c.classList.remove('sel'));
+    renderResults();
+  }
+
+  function renderResults() {
+    const protein  = document.getElementById('selProtein').value;
+    const cuisine  = document.getElementById('selCuisine').value;
+    const method   = document.getElementById('selMethod').value;
+    const time     = document.getElementById('selTime').value;
+
+    let filtered = RECIPES.filter(r => {
+      if (activeCat !== 'All' && !(r.category || []).includes(activeCat)) return false;
+      if (protein && r.protein !== protein) return false;
+      if (cuisine && r.cuisine !== cuisine) return false;
+      if (method && !(r.methods || []).includes(method)) return false;
+      if (time && r.time !== time) return false;
+      return true;
+    });
+
+    /* Sort by net carbs (parse leading number) */
+    filtered.sort((a, b) => parseFloat(a.net_carbs) - parseFloat(b.net_carbs));
+
+    const grid    = document.getElementById('resultsGrid');
+    const noRes   = document.getElementById('noResults');
+    const count   = document.getElementById('resultsCount');
+
+    count.textContent = `${filtered.length} recipe${filtered.length !== 1 ? 's' : ''}${activeCat !== 'All' ? ' in ' + activeCat : ''}`;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      noRes.style.display = 'block';
+    } else {
+      noRes.style.display = 'none';
+      grid.innerHTML = filtered.map(buildRecipeCard).join('');
+    }
+  }
+
+  renderResults();
+</script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a Recipe — The Surprising Keto Journey</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container" style="max-width:680px;">
+  <div class="page-header">
+    <div class="section-label">Community recipes</div>
+    <h1>Submit a recipe</h1>
+    <p class="lead">Tried something that works on keto and tastes amazing? Share it. We review every submission and publish the ones that fit our approach.</p>
+  </div>
+
+  <div style="background:var(--green-light);border:1px solid rgba(29,158,117,0.2);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--green-mid);">
+    <strong>What we look for:</strong> Recipes under 20g net carbs per serving, real ingredients (no processed shortcuts), full step-by-step instructions, and dishes with genuine cultural roots. We especially love cuisines underrepresented in the keto world.
+  </div>
+
+  <div class="card" style="padding:2rem;">
+    <div class="alert alert-success" id="submitSuccess">
+      <strong>Recipe received!</strong> Thank you for sharing. We review all submissions personally and will reach out if we publish yours. You should receive a confirmation email shortly.
+    </div>
+    <div class="alert alert-error" id="submitError">
+      Something went wrong. Please try again or email your recipe directly to admin@surprisingketo.com
+    </div>
+
+    <div id="submitForm">
+      <h3 style="margin-bottom:1.25rem;font-size:1rem;color:var(--text-muted);font-weight:400;border-bottom:1px solid var(--border);padding-bottom:0.75rem;">About you</h3>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+        <div class="form-group">
+          <label for="subName">Your name <span style="color:var(--red-mid);">*</span></label>
+          <input type="text" id="subName" placeholder="First name or full name" required>
+        </div>
+        <div class="form-group">
+          <label for="subEmail">Email address <span style="color:var(--red-mid);">*</span></label>
+          <input type="email" id="subEmail" placeholder="you@example.com" required>
+          <div class="form-hint">We'll send a confirmation and notify you if published.</div>
+        </div>
+      </div>
+
+      <h3 style="margin:1.25rem 0 1rem;font-size:1rem;color:var(--text-muted);font-weight:400;border-bottom:1px solid var(--border);padding-bottom:0.75rem;">About the recipe</h3>
+
+      <div class="form-group">
+        <label for="recTitle">Recipe title <span style="color:var(--red-mid);">*</span></label>
+        <input type="text" id="recTitle" placeholder="e.g. Harissa Roasted Chicken Thighs" required>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
+        <div class="form-group">
+          <label for="recCuisine">Cuisine / origin</label>
+          <select id="recCuisine">
+            <option value="">Select cuisine</option>
+            <option>Mediterranean</option><option>West African</option><option>East African</option>
+            <option>North African</option><option>Cajun / Creole</option><option>Soul Food</option>
+            <option>BBQ / Smoke</option><option>Greek</option><option>Spanish</option>
+            <option>Italian</option><option>Middle Eastern</option><option>Asian</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="recProtein">Main protein</label>
+          <select id="recProtein">
+            <option value="">Select protein</option>
+            <option>Fish</option><option>Shellfish</option><option>Chicken</option>
+            <option>Lamb</option><option>Beef</option><option>Pork</option>
+            <option>Eggs</option><option>Vegetarian</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="recCategory">Meal type</label>
+          <select id="recCategory">
+            <option value="">Select type</option>
+            <option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+            <option>Brunch</option><option>Sides</option><option>Snacks</option><option>Sauces</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
+        <div class="form-group">
+          <label for="recCarbs">Net carbs per serving <span style="color:var(--red-mid);">*</span></label>
+          <input type="text" id="recCarbs" placeholder="e.g. ~4g">
+        </div>
+        <div class="form-group">
+          <label for="recServes">Serves</label>
+          <input type="text" id="recServes" placeholder="e.g. 2">
+        </div>
+        <div class="form-group">
+          <label for="recTime">Time required</label>
+          <select id="recTime">
+            <option value="">Select time</option>
+            <option>Under 30 min</option><option>30–60 min</option><option>Weekend project</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="recMethods">Cooking methods available (comma separated)</label>
+        <input type="text" id="recMethods" placeholder="e.g. Grill, Oven, Stovetop">
+      </div>
+
+      <div class="form-group">
+        <label for="recIngredients">Ingredients <span style="color:var(--red-mid);">*</span></label>
+        <textarea id="recIngredients" style="min-height:160px;" placeholder="List each ingredient on its own line with quantity. Example:&#10;2 lbs chicken thighs&#10;3 tbsp harissa paste&#10;2 tbsp olive oil&#10;4 garlic cloves, minced"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="recSteps">Instructions <span style="color:var(--red-mid);">*</span></label>
+        <textarea id="recSteps" style="min-height:200px;" placeholder="Number each step. Example:&#10;1. Preheat oven to 425°F.&#10;2. Pat chicken dry and season generously with salt and pepper.&#10;3. Mix harissa with olive oil and garlic. Coat chicken thoroughly.&#10;4. Roast 35–40 min until skin is crispy and juices run clear."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="recNotes">Notes, substitutions, or tips <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+        <textarea id="recNotes" placeholder="Any tips for success, ingredient substitutions, or storage notes."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="recSource">Recipe source or inspiration <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+        <input type="text" id="recSource" placeholder="e.g. Family recipe, adapted from The Mediterranean Dish, original creation">
+      </div>
+
+      <div style="background:var(--gray-100);border-radius:var(--radius-md);padding:1rem;margin-bottom:1.25rem;font-size:0.82rem;color:var(--text-muted);">
+        By submitting, you confirm this recipe is your own creation or properly adapted with attribution, and you grant The Surprising Keto Journey the right to publish it on this site with credit to you.
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.75rem;" onclick="submitRecipeForm()">
+        Submit recipe for review
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/app.js"></script>
+<script>
+  renderNav('Submit a Recipe');
+  renderFooter();
+
+  async function submitRecipeForm() {
+    const name       = document.getElementById('subName').value.trim();
+    const email      = document.getElementById('subEmail').value.trim();
+    const title      = document.getElementById('recTitle').value.trim();
+    const carbs      = document.getElementById('recCarbs').value.trim();
+    const ingredients = document.getElementById('recIngredients').value.trim();
+    const steps      = document.getElementById('recSteps').value.trim();
+
+    if (!name || !email || !title || !carbs || !ingredients || !steps) {
+      alert('Please fill in all required fields (marked with *).');
+      return;
+    }
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const data = {
+      submitter_name:  name,
+      submitter_email: email,
+      title,
+      cuisine:         document.getElementById('recCuisine').value,
+      protein:         document.getElementById('recProtein').value,
+      category:        document.getElementById('recCategory').value,
+      net_carbs:       carbs,
+      serves:          document.getElementById('recServes').value,
+      time:            document.getElementById('recTime').value,
+      methods:         document.getElementById('recMethods').value,
+      ingredients,
+      steps,
+      notes:           document.getElementById('recNotes').value,
+      source:          document.getElementById('recSource').value,
+      status:          'pending',
+    };
+
+    try {
+      await submitRecipe(data);
+      document.getElementById('submitForm').style.display = 'none';
+      showAlert('submitSuccess');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch(e) {
+      showAlert('submitError');
+      console.error(e);
+    }
+  }
+</script>
+</body>
+</html>

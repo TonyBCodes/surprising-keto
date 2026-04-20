@@ -1,0 +1,23 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/recipe"
+  to = "/recipe/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/recipes"
+  to = "/recipes/index.html"
+  status = 200
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — The Surprising Keto Journey</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container" style="padding-top:2rem;padding-bottom:3rem;">
+
+  <!-- Login screen -->
+  <div id="loginScreen" style="max-width:400px;margin:4rem auto;">
+    <div class="card" style="padding:2rem;text-align:center;">
+      <h2 style="margin-bottom:0.4rem;">Admin panel</h2>
+      <p style="margin-bottom:1.5rem;">The Surprising Keto Journey</p>
+      <div class="form-group" style="text-align:left;">
+        <label for="adminPass">Password</label>
+        <input type="password" id="adminPass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkLogin()">
+        <div class="form-error visible" id="loginError" style="display:none;">Incorrect password. Please try again.</div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="checkLogin()">Sign in</button>
+    </div>
+  </div>
+
+  <!-- Admin dashboard (hidden until login) -->
+  <div id="adminDash" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <div>
+        <div class="section-label">Admin panel</div>
+        <h1 style="font-size:1.75rem;">Dashboard</h1>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+    </div>
+
+    <!-- Stat cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem;">
+      <div class="stat-card"><div class="s-label">Published recipes</div><div class="s-val" id="statRecipes">—</div></div>
+      <div class="stat-card"><div class="s-label">Subscribers</div><div class="s-val" id="statSubs">—</div></div>
+      <div class="stat-card"><div class="s-label">Pending submissions</div><div class="s-val" id="statPending">—</div></div>
+      <div class="stat-card"><div class="s-label">Total submissions</div><div class="s-val" id="statTotal">—</div></div>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Sidebar nav -->
+      <div class="admin-sidebar">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Manage</div>
+        <button class="admin-nav-item active" onclick="showPanel('recipes',this)">Recipes</button>
+        <button class="admin-nav-item" onclick="showPanel('addRecipe',this)">+ Add recipe</button>
+        <button class="admin-nav-item" onclick="showPanel('submissions',this)">Submissions</button>
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin:1rem 0 0.5rem;padding:0 0.5rem;">Subscribers</div>
+        <button class="admin-nav-item" onclick="showPanel('subscribers',this)">View list</button>
+        <button class="admin-nav-item" onclick="showPanel('email',this)">Send notification</button>
+      </div>
+
+      <!-- Main content area -->
+      <div>
+
+        <!-- Published Recipes -->
+        <div id="panel-recipes" class="admin-panel active">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h3>Published recipes</h3>
+            <input type="text" placeholder="Search recipes..." style="max-width:220px;" oninput="filterAdminRecipes(this.value)">
+          </div>
+          <table class="admin-table" id="adminRecipeTable">
+            <thead><tr>
+              <th>Title</th><th>Cuisine</th><th>Category</th><th>Net carbs</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="adminRecipeBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Add Recipe -->
+        <div id="panel-addRecipe" class="admin-panel">
+          <h3 style="margin-bottom:1.25rem;">Add new recipe</h3>
+          <div class="alert alert-success" id="addSuccess">Recipe added successfully! Refresh the recipe page to see it live.</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label>Recipe ID (slug) *</label><input type="text" id="newId" placeholder="e.g. harissa-chicken"></div>
+            <div class="form-group"><label>Title *</label><input type="text" id="newTitle" placeholder="e.g. Harissa Roasted Chicken"></div>
+          </div>
+          <div class="form-group"><label>Description</label><input type="text" id="newDesc" placeholder="One-line description"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label>Cuisine *</label><input type="text" id="newCuisine" placeholder="e.g. North African"></div>
+            <div class="form-group"><label>Protein</label><input type="text" id="newProtein" placeholder="e.g. Chicken"></div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="newCategory">
+                <option>Dinner</option><option>Breakfast</option><option>Lunch</option>
+                <option>Brunch</option><option>Sides</option><option>Snacks</option><option>Sauces</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label>Net carbs *</label><input type="text" id="newCarbs" placeholder="e.g. ~4g"></div>
+            <div class="form-group"><label>Protein (g)</label><input type="text" id="newProteinG" placeholder="e.g. ~32g"></div>
+            <div class="form-group"><label>Serves</label><input type="text" id="newServes" placeholder="2"></div>
+            <div class="form-group">
+              <label>Time</label>
+              <select id="newTime">
+                <option>Under 30 min</option><option>30–60 min</option><option>Weekend project</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Cooking methods (comma separated)</label><input type="text" id="newMethods" placeholder="Grill, Oven, Stovetop"></div>
+          <div class="form-group"><label>Skill level</label><select id="newSkill"><option>Easy</option><option>Moderate</option><option>Advanced</option></select></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div class="form-group"><label>Yeast extract flag</label><select id="newYeast"><option value="false">No</option><option value="true">Yes — add note</option></select></div>
+            <div class="form-group"><label>Yeast note (if flagged)</label><input type="text" id="newYeastNote" placeholder="Which ingredient to verify"></div>
+          </div>
+          <div class="form-group"><label>Ingredients (one per line: qty | item | source)</label><textarea id="newIngredients" placeholder="2 | branzino fillets (6–8 oz) | Asian grocery or fish market&#10;3 tbsp | extra virgin olive oil | Standard grocery"></textarea></div>
+          <div class="form-group"><label>Grill steps (one per line)</label><textarea id="newStepsGrill" placeholder="Step 1 text&#10;Step 2 text"></textarea></div>
+          <div class="form-group"><label>Oven steps (one per line)</label><textarea id="newStepsOven"></textarea></div>
+          <div class="form-group"><label>Stovetop steps (one per line)</label><textarea id="newStepsStovetop"></textarea></div>
+          <div class="form-group"><label>Slow cooker steps (one per line)</label><textarea id="newStepsSlow"></textarea></div>
+          <div class="form-group"><label>Notes (one per line)</label><textarea id="newNotes"></textarea></div>
+          <div class="form-group"><label>Side pairings (comma separated)</label><input type="text" id="newSides" placeholder="Escalivada, Grilled zucchini, Arugula salad"></div>
+          <button class="btn btn-primary" onclick="addRecipeToData()">Save recipe to site</button>
+        </div>
+
+        <!-- Submissions -->
+        <div id="panel-submissions" class="admin-panel">
+          <h3 style="margin-bottom:1rem;">Pending submissions</h3>
+          <div class="alert alert-success" id="approveSuccess">Submission approved and published!</div>
+          <div id="submissionsList">
+            <p style="color:var(--text-muted);font-size:0.9rem;">Loading submissions from database...</p>
+          </div>
+        </div>
+
+        <!-- Subscribers -->
+        <div id="panel-subscribers" class="admin-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <h3>Subscriber list</h3>
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV()">Export CSV</button>
+          </div>
+          <table class="admin-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Country</th><th>State / Province</th><th>Joined</th></tr></thead>
+            <tbody id="subscriberBody">
+              <tr><td colspan="5" style="color:var(--text-muted);font-style:italic;">Loading from database...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Send notification email -->
+        <div id="panel-email" class="admin-panel">
+          <h3 style="margin-bottom:1.25rem;">Send batch notification</h3>
+          <div style="background:var(--green-light);border:1px solid rgba(29,158,117,0.2);border-radius:var(--radius-md);padding:1rem;margin-bottom:1.25rem;font-size:0.88rem;color:var(--green-mid);">
+            This sends to your full subscriber list via Mailchimp. Only send when you have a meaningful batch of new recipes to announce.
+          </div>
+          <div class="form-group">
+            <label>Email subject</label>
+            <input type="text" id="emailSubject" placeholder="e.g. 8 new recipes on The Surprising Keto Journey">
+          </div>
+          <div class="form-group">
+            <label>New recipes to highlight (one per line)</label>
+            <textarea id="emailRecipes" placeholder="Chermoula Grilled Fish&#10;Suya Skewers&#10;Doro Wat"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Personal note to subscribers (optional)</label>
+            <textarea id="emailNote" placeholder="A short personal message from you — what inspired this batch, a cooking tip, etc."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Send to</label>
+            <select id="emailSegment">
+              <option value="all">All subscribers</option>
+              <option value="US">United States only</option>
+              <option value="CA">Canada only</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;">
+            <button class="btn btn-primary" onclick="sendNotification()">Send notification via Mailchimp</button>
+            <span style="font-size:0.8rem;color:var(--text-muted);">Opens Mailchimp campaign builder with your content pre-filled</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/data.js"></script>
+<script src="/js/app.js"></script>
+<script>
+  renderNav('');
+  renderFooter();
+
+  /* ---------- Auth ---------- */
+  /* 
+    IMPORTANT: Change this password before deploying.
+    For production, replace with Netlify Identity (free).
+    Instructions in README.md.
+  */
+  const ADMIN_PASS = 'surprisingketo2026';
+
+  function checkLogin() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === ADMIN_PASS) {
+      sessionStorage.setItem('skAdmin', '1');
+      showDash();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('skAdmin');
+    document.getElementById('adminDash').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'block';
+  }
+
+  function showDash() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminDash').style.display = 'block';
+    loadStats();
+    loadAdminRecipes();
+  }
+
+  /* Auto-login if session exists */
+  if (sessionStorage.getItem('skAdmin')) showDash();
+
+  /* ---------- Panel switching ---------- */
+  function showPanel(name, el) {
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+    document.getElementById(`panel-${name}`).classList.add('active');
+    el.classList.add('active');
+    if (name === 'submissions') loadSubmissions();
+    if (name === 'subscribers') loadSubscribers();
+  }
+
+  /* ---------- Stats ---------- */
+  function loadStats() {
+    document.getElementById('statRecipes').textContent = RECIPES.length;
+    /* Load live counts from Supabase */
+    supabaseFetch('subscribers?select=count', { headers: { 'Prefer': 'count=exact' } })
+      .then(r => { /* response headers contain count */ })
+      .catch(() => {});
+    document.getElementById('statSubs').textContent = '—';
+    document.getElementById('statPending').textContent = '—';
+    document.getElementById('statTotal').textContent = '—';
+  }
+
+  /* ---------- Recipe table ---------- */
+  function loadAdminRecipes() {
+    const tbody = document.getElementById('adminRecipeBody');
+    tbody.innerHTML = RECIPES.map(r => `
+      <tr>
+        <td><strong>${r.title}</strong></td>
+        <td>${r.cuisine}</td>
+        <td>${(r.category || []).join(', ')}</td>
+        <td style="color:var(--green);font-weight:600;">${r.net_carbs}</td>
+        <td>
+          <a href="/recipe/?id=${r.id}" target="_blank" class="btn btn-ghost btn-sm">View</a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function filterAdminRecipes(q) {
+    const rows = document.querySelectorAll('#adminRecipeBody tr');
+    rows.forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+    });
+  }
+
+  /* ---------- Add recipe ---------- */
+  function addRecipeToData() {
+    const id    = document.getElementById('newId').value.trim();
+    const title = document.getElementById('newTitle').value.trim();
+    if (!id || !title) { alert('Recipe ID and title are required.'); return; }
+
+    /* Parse ingredients */
+    const ings = document.getElementById('newIngredients').value.trim().split('\n').map(line => {
+      const parts = line.split('|').map(s => s.trim());
+      return { qty: parts[0] || '', item: parts[1] || parts[0] || '', source: parts[2] || '' };
+    });
+
+    /* Parse steps */
+    const parseSteps = id => document.getElementById(id).value.trim().split('\n').filter(Boolean);
+    const steps = {};
+    const grillSteps = parseSteps('newStepsGrill');
+    const ovenSteps  = parseSteps('newStepsOven');
+    const stoveSteps = parseSteps('newStepsStovetop');
+    const slowSteps  = parseSteps('newStepsSlow');
+    if (grillSteps.length) steps['Grill'] = grillSteps;
+    if (ovenSteps.length)  steps['Oven']  = ovenSteps;
+    if (stoveSteps.length) steps['Stovetop'] = stoveSteps;
+    if (slowSteps.length)  steps['Slow cooker'] = slowSteps;
+
+    const newRecipe = {
+      id, title,
+      description: document.getElementById('newDesc').value.trim(),
+      category: [document.getElementById('newCategory').value],
+      cuisine:  document.getElementById('newCuisine').value.trim(),
+      protein:  document.getElementById('newProtein').value.trim(),
+      methods:  document.getElementById('newMethods').value.split(',').map(s => s.trim()).filter(Boolean),
+      time:     document.getElementById('newTime').value,
+      net_carbs: document.getElementById('newCarbs').value.trim(),
+      protein_g: document.getElementById('newProteinG').value.trim(),
+      serves:   parseInt(document.getElementById('newServes').value) || 2,
+      skill:    document.getElementById('newSkill').value,
+      yeast_flag: document.getElementById('newYeast').value === 'true',
+      yeast_note: document.getElementById('newYeastNote').value.trim(),
+      ingredients: ings,
+      steps,
+      notes: document.getElementById('newNotes').value.trim().split('\n').filter(Boolean),
+      sides: document.getElementById('newSides').value.split(',').map(s => s.trim()).filter(Boolean),
+      substitutes: [],
+      carb_breakdown: [],
+    };
+
+    /* Show the JSON to copy into data.js */
+    const json = JSON.stringify(newRecipe, null, 2);
+    const output = document.createElement('div');
+    output.style.cssText = 'margin-top:1rem;background:var(--gray-100);border-radius:var(--radius-md);padding:1rem;';
+    output.innerHTML = `
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.5rem;">Copy this JSON and add it to the RECIPES array in <code>/js/data.js</code>, then redeploy:</div>
+      <textarea style="width:100%;height:300px;font-family:monospace;font-size:0.75rem;" readonly>${json}</textarea>
+      <div style="margin-top:0.5rem;font-size:0.78rem;color:var(--green-mid);">After adding to data.js and redeploying to Netlify, the recipe will be live within 1–2 minutes.</div>
+    `;
+    document.getElementById('panel-addRecipe').appendChild(output);
+    showAlert('addSuccess');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- Submissions ---------- */
+  async function loadSubmissions() {
+    const container = document.getElementById('submissionsList');
+    try {
+      const subs = await supabaseFetch('submissions?status=eq.pending&order=created_at.desc');
+      if (!subs || subs.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted);">No pending submissions.</p>';
+        document.getElementById('statPending').textContent = 0;
+        return;
+      }
+      document.getElementById('statPending').textContent = subs.length;
+      container.innerHTML = subs.map(s => `
+        <div class="card" style="margin-bottom:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;">
+            <div>
+              <strong>${s.title}</strong>
+              <div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
+                From: ${s.submitter_name} &lt;${s.submitter_email}&gt; &nbsp;|&nbsp; ${s.cuisine || '—'} &nbsp;|&nbsp; ${s.net_carbs} net carbs
+              </div>
+            </div>
+            <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+              <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}')">Approve</button>
+              <button class="btn btn-ghost btn-sm" onclick="declineSubmission('${s.id}')">Decline</button>
+            </div>
+          </div>
+          <hr class="divider" style="margin:0.75rem 0;">
+          <div style="font-size:0.82rem;color:var(--text-muted);">
+            <strong>Ingredients:</strong><br><pre style="white-space:pre-wrap;font-size:0.78rem;">${s.ingredients}</pre>
+          </div>
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+            <strong>Steps:</strong><br><pre style="white-space:pre-wrap;font-size:0.78rem;">${s.steps}</pre>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      container.innerHTML = '<p style="color:var(--text-muted);">Unable to load submissions. Ensure Supabase is configured in app.js.</p>';
+    }
+  }
+
+  async function approveSubmission(id) {
+    try {
+      await supabaseFetch(`submissions?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'approved' }) });
+      showAlert('approveSuccess');
+      loadSubmissions();
+    } catch(e) { alert('Error approving submission.'); }
+  }
+
+  async function declineSubmission(id) {
+    if (!confirm('Decline this submission?')) return;
+    try {
+      await supabaseFetch(`submissions?id=eq.${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'declined' }) });
+      loadSubmissions();
+    } catch(e) { alert('Error declining submission.'); }
+  }
+
+  /* ---------- Subscribers ---------- */
+  async function loadSubscribers() {
+    const tbody = document.getElementById('subscriberBody');
+    try {
+      const subs = await supabaseFetch('subscribers?order=created_at.desc');
+      document.getElementById('statSubs').textContent = subs ? subs.length : 0;
+      if (!subs || subs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-muted);">No subscribers yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = subs.map(s => `
+        <tr>
+          <td>${s.first_name || '—'}</td>
+          <td>${s.email}</td>
+          <td>${s.country || '—'}</td>
+          <td>${s.state_province || '—'}</td>
+          <td style="font-size:0.78rem;color:var(--text-muted);">${new Date(s.created_at).toLocaleDateString()}</td>
+        </tr>
+      `).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-muted);">Unable to load. Check Supabase config.</td></tr>';
+    }
+  }
+
+  function exportCSV() {
+    /* Simple CSV export from current table */
+    const rows = [...document.querySelectorAll('#subscriberBody tr')];
+    const csv  = rows.map(r => [...r.querySelectorAll('td')].map(td => `"${td.textContent.trim()}"`).join(',')).join('\n');
+    const blob = new Blob([`"Name","Email","Country","State","Joined"\n${csv}`], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a'); a.href = url; a.download = 'subscribers.csv'; a.click();
+  }
+
+  /* ---------- Send notification ---------- */
+  function sendNotification() {
+    const subject = document.getElementById('emailSubject').value.trim();
+    const recipes = document.getElementById('emailRecipes').value.trim();
+    if (!subject || !recipes) { alert('Please fill in the subject and recipe list.'); return; }
+    /* Opens Mailchimp — in production, integrate via Mailchimp API */
+    alert('In production: This will trigger a Mailchimp campaign via API.\n\nSubject: ' + subject + '\n\nRecipes:\n' + recipes + '\n\nSee README.md for Mailchimp integration setup.');
+  }
+</script>
+</body>
+</html>
