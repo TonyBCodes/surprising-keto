@@ -112,7 +112,7 @@ async function inlineSubscribe(containerId) {
   if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
 
   try {
-    await submitSubscriber({ name, email });
+    await submitSubscriber({ first_name: name, email });
     document.getElementById(`subRow_${containerId}`).style.display = 'none';
     showAlert(`subSuccess_${containerId}`);
   } catch (e) {
