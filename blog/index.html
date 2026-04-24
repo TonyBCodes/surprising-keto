@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — The Surprising Keto Journey</title>
+  <meta name="description" content="Articles, journey updates, cooking techniques, and practical guides from The Surprising Keto Journey.">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav id="site-nav"></nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="section-label">Articles & updates</div>
+    <h1>Blog</h1>
+    <p class="lead">Journey updates, cooking techniques, label-reading guides, and practical advice for eating well on keto.</p>
+  </div>
+
+  <div class="ad-slot"><!-- Google AdSense leaderboard — insert after approval -->Advertisement</div>
+
+  <!-- Featured post -->
+  <div class="card" style="margin-bottom:1.5rem;padding:1.75rem 2rem;">
+    <div class="section-label" style="margin-bottom:0.4rem;">Featured</div>
+    <h2 style="font-size:1.4rem;margin-bottom:0.5rem;">
+      <a href="/blog/how-we-started/" style="color:var(--text);text-decoration:none;">How we started: from curiosity to 20 lbs down</a>
+    </h2>
+    <p style="margin-bottom:1rem;">The first conversation that changed everything — and what we learned in the first 30 days of Mediterranean-keto. What worked, what surprised us, and what we'd do differently if we were starting over today.</p>
+    <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <span style="font-size:0.78rem;color:var(--text-muted);">April 2026</span>
+      <span class="badge badge-cuisine">Our journey</span>
+      <a href="/blog/how-we-started/" class="btn btn-outline btn-sm">Read post</a>
+    </div>
+  </div>
+
+  <!-- Blog grid -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem;">
+
+    <a href="/blog/yeast-extract-guide/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">March 2026 &nbsp;·&nbsp; <span class="badge badge-yeast" style="font-size:0.68rem;">Label reading</span></div>
+      <h3>The hidden ingredient that was working against us</h3>
+      <p>Yeast extract hides in broths, condiments, cured meats, and pre-mixed seasonings. Here's exactly what to look for and what to use instead.</p>
+    </a>
+
+    <a href="/blog/flavor-without-fat/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">March 2026 &nbsp;·&nbsp; <span class="badge badge-method" style="font-size:0.68rem;">Technique</span></div>
+      <h3>Flavor without fat: technique as your secret weapon</h3>
+      <p>Grilling, smoking, high-heat roasting, acids, and marinades. How to build extraordinary flavor at lower fat ratios when you're working through a plateau.</p>
+    </a>
+
+    <a href="/blog/african-cuisine-keto/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">February 2026 &nbsp;·&nbsp; <span class="badge badge-cuisine" style="font-size:0.68rem;">Cuisines</span></div>
+      <h3>Why African cuisines are perfect for keto</h3>
+      <p>Chermoula, suya, tibs, doro wat, mechoui — the spice-forward, protein-centered nature of African cooking makes it naturally keto-compatible. Here's where to start.</p>
+    </a>
+
+    <a href="/blog/sweetener-guide/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">February 2026 &nbsp;·&nbsp; <span class="badge badge-gray" style="font-size:0.68rem;">Ingredients</span></div>
+      <h3>The keto sweetener guide: what actually works</h3>
+      <p>Allulose, monk fruit, erythritol, stevia — what each one is good for, which ones to avoid, and why the blend matters for cooking and baking.</p>
+    </a>
+
+    <a href="/blog/plateau-guide/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">April 2026 &nbsp;·&nbsp; <span class="badge badge-blue" style="font-size:0.68rem;">Progress</span></div>
+      <h3>Breaking through a weight loss plateau on keto</h3>
+      <p>What actually causes keto plateaus, and the practical adjustments that move the needle — higher protein ratios, measured cooking fat, movement habits, and more.</p>
+    </a>
+
+    <a href="/blog/keto-bbq-guide/" class="card blog-card" style="text-decoration:none;">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">March 2026 &nbsp;·&nbsp; <span class="badge badge-method" style="font-size:0.68rem;">BBQ</span></div>
+      <h3>Keto BBQ: everything you need to know</h3>
+      <p>From building a sugar-free BBQ sauce that actually caramelizes on the grill, to which rubs and marinades are safe, to smoking times for keto-friendly cuts.</p>
+    </a>
+
+  </div>
+
+  <!-- Ad slot mid-page -->
+  <div class="ad-slot" style="margin-bottom:2rem;">
+    <!-- Google AdSense rectangle — insert after approval -->
+    Advertisement
+  </div>
+
+  <!-- Coming soon note -->
+  <div style="background:var(--gray-100);border-radius:var(--radius-lg);padding:1.5rem 2rem;margin-bottom:2rem;text-align:center;">
+    <div class="section-label" style="margin-bottom:0.4rem;">More coming soon</div>
+    <p style="margin-bottom:1rem;">We add new posts as the journey continues. Subscribe to get notified when new articles are published.</p>
+    <a href="/subscribe/" class="btn btn-primary">Subscribe for updates</a>
+  </div>
+
+  <div id="blogSubscribe"></div>
+
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="/js/app.js"></script>
+<script>
+  renderNav('Blog');
+  renderFooter();
+  renderSubscribeInline('blogSubscribe', 'blog');
+</script>
+</body>
+</html>
