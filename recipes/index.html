@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipes — The Surprising Keto Journey</title>
-  <meta name="description" content="Browse 160+ keto recipes across African, Mediterranean, Cajun, Soul Food, and BBQ cuisines. Filter by meal type, cuisine, protein, cooking method, and time.">
+  <meta name="description" content="Browse keto recipes across African, Mediterranean, Cajun, Soul Food, and BBQ cuisines. Filter by meal type, cuisine, protein, cooking method, and time.">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -13,9 +13,10 @@
 
 <div class="container">
   <div class="page-header">
-    <div class="section-label">160+ recipes</div>
+    <!-- Recipe count dynamically set from RECIPES.length in data.js -->
+    <div class="section-label" id="recipeCountLabel">Recipes</div>
     <h1>Find your next meal</h1>
-    <p class="lead">Filter by what you're cooking, what you have, or how much time you've got.</p>
+    <p class="lead">Select your filters and click Search — or leave everything as-is to browse the full collection.</p>
   </div>
 
   <!-- Meal type pills -->
@@ -36,7 +37,7 @@
     <div class="filter-row">
       <div class="filter-group">
         <label>Protein</label>
-        <select id="selProtein" onchange="renderResults()">
+        <select id="selProtein">
           <option value="">Any protein</option>
           <option>Fish</option><option>Lamb</option><option>Chicken</option>
           <option>Pork</option><option>Beef</option><option>Shellfish</option><option>Eggs</option>
@@ -44,7 +45,7 @@
       </div>
       <div class="filter-group">
         <label>Cuisine</label>
-        <select id="selCuisine" onchange="renderResults()">
+        <select id="selCuisine">
           <option value="">Any cuisine</option>
           <option>Mediterranean</option><option>West African</option><option>East African</option>
           <option>North African</option><option>Cajun / Creole</option><option>Soul Food</option>
@@ -53,7 +54,7 @@
       </div>
       <div class="filter-group">
         <label>Cooking method</label>
-        <select id="selMethod" onchange="renderResults()">
+        <select id="selMethod">
           <option value="">Any method</option>
           <option>Grill</option><option>Smoker</option><option>Oven</option>
           <option>Slow cooker</option><option>Pressure cooker</option><option>Stovetop</option><option>No cook</option>
@@ -61,13 +62,10 @@
       </div>
       <div class="filter-group">
         <label>Time</label>
-        <select id="selTime" onchange="renderResults()">
+        <select id="selTime">
           <option value="">Any time</option>
           <option>Under 30 min</option><option>30–60 min</option><option>Weekend project</option>
         </select>
-      </div>
-      <div style="display:flex;align-items:flex-end;">
-        <button class="btn btn-ghost btn-sm" onclick="resetFilters()">Clear filters</button>
       </div>
     </div>
 
@@ -86,6 +84,12 @@
         <div class="ing-chip" onclick="toggleIng(this)">salmon</div>
       </div>
     </div>
+
+    <!-- Search and Clear buttons -->
+    <div style="display:flex;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+      <button class="btn btn-primary" onclick="runSearch()" style="min-width:140px;">Search recipes</button>
+      <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+    </div>
   </div>
 
   <!-- Ad slot -->
@@ -94,8 +98,15 @@
     Advertisement
   </div>
 
-  <!-- Results header -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+  <!-- Prompt state — shown before first search -->
+  <div id="promptState" style="text-align:center;padding:3rem 0;color:var(--text-muted);border:2px dashed var(--border);border-radius:var(--radius-lg);">
+    <div style="font-size:2rem;margin-bottom:0.75rem;opacity:0.35;">&#127859;</div>
+    <div style="font-size:1rem;font-weight:500;color:var(--text);margin-bottom:0.4rem;">Select your filters above and click Search</div>
+    <div style="font-size:0.88rem;">Leave all filters on their defaults to browse the full collection.</div>
+  </div>
+
+  <!-- Results header — hidden until search runs -->
+  <div id="resultsHeader" style="display:none;justify-content:space-between;align-items:center;margin-bottom:1rem;">
     <div id="resultsCount" style="font-size:0.85rem;color:var(--text-muted);"></div>
     <div style="font-size:0.78rem;color:var(--text-muted);">sorted by net carbs: low to high</div>
   </div>
@@ -103,9 +114,12 @@
   <!-- Results grid -->
   <div class="recipe-grid" id="resultsGrid"></div>
 
+  <!-- No results state -->
   <div id="noResults" style="display:none;text-align:center;padding:3rem 0;color:var(--text-muted);">
     <div style="font-size:1.25rem;margin-bottom:0.5rem;">No recipes match those filters</div>
-    <div style="font-size:0.9rem;">Try broadening your selection or <button class="btn btn-ghost btn-sm" onclick="resetFilters()">clear all filters</button></div>
+    <div style="font-size:0.9rem;">Try broadening your selection or
+      <button class="btn btn-ghost btn-sm" onclick="clearAll()">clear all filters</button>
+    </div>
   </div>
 
   <!-- Subscribe -->
@@ -121,9 +135,13 @@
   renderFooter();
   renderSubscribeInline('recipesSubscribe', 'recipes');
 
+  /* Set real recipe count dynamically from data.js */
+  document.getElementById('recipeCountLabel').textContent =
+    RECIPES.length + ' recipe' + (RECIPES.length !== 1 ? 's' : '');
+
   let activeCat = 'All';
 
-  /* Check URL params on load */
+  /* Check URL params on load — auto-search if params present */
   const paramCat     = getParam('cat');
   const paramCuisine = getParam('cuisine');
   if (paramCat) {
@@ -135,58 +153,80 @@
   if (paramCuisine) {
     document.getElementById('selCuisine').value = paramCuisine;
   }
+  /* Auto-search only if URL params were present */
+  if (paramCat || paramCuisine) runSearch();
 
   function setCat(el) {
     document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
     activeCat = el.dataset.cat;
-    renderResults();
+    /* No auto-run — user clicks Search */
   }
 
-  function toggleIng(el) { el.classList.toggle('sel'); renderResults(); }
-
-  function resetFilters() {
-    activeCat = 'All';
-    document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.cat === 'All'));
-    ['selProtein','selCuisine','selMethod','selTime'].forEach(id => document.getElementById(id).value = '');
-    document.querySelectorAll('.ing-chip').forEach(c => c.classList.remove('sel'));
-    renderResults();
+  function toggleIng(el) {
+    el.classList.toggle('sel');
+    /* No auto-run — user clicks Search */
   }
 
-  function renderResults() {
-    const protein  = document.getElementById('selProtein').value;
-    const cuisine  = document.getElementById('selCuisine').value;
-    const method   = document.getElementById('selMethod').value;
-    const time     = document.getElementById('selTime').value;
+  function runSearch() {
+    const protein = document.getElementById('selProtein').value;
+    const cuisine = document.getElementById('selCuisine').value;
+    const method  = document.getElementById('selMethod').value;
+    const time    = document.getElementById('selTime').value;
 
     let filtered = RECIPES.filter(r => {
       if (activeCat !== 'All' && !(r.category || []).includes(activeCat)) return false;
       if (protein && r.protein !== protein) return false;
       if (cuisine && r.cuisine !== cuisine) return false;
-      if (method && !(r.methods || []).includes(method)) return false;
-      if (time && r.time !== time) return false;
+      if (method  && !(r.methods || []).includes(method)) return false;
+      if (time    && r.time !== time) return false;
       return true;
     });
 
-    /* Sort by net carbs (parse leading number) */
+    /* Sort by net carbs low to high */
     filtered.sort((a, b) => parseFloat(a.net_carbs) - parseFloat(b.net_carbs));
 
-    const grid    = document.getElementById('resultsGrid');
-    const noRes   = document.getElementById('noResults');
-    const count   = document.getElementById('resultsCount');
+    const grid      = document.getElementById('resultsGrid');
+    const noRes     = document.getElementById('noResults');
+    const prompt    = document.getElementById('promptState');
+    const resHeader = document.getElementById('resultsHeader');
+    const count     = document.getElementById('resultsCount');
 
-    count.textContent = `${filtered.length} recipe${filtered.length !== 1 ? 's' : ''}${activeCat !== 'All' ? ' in ' + activeCat : ''}`;
+    /* Always hide prompt once search runs */
+    prompt.style.display = 'none';
 
     if (filtered.length === 0) {
+      resHeader.style.display = 'none';
       grid.innerHTML = '';
       noRes.style.display = 'block';
     } else {
       noRes.style.display = 'none';
+      resHeader.style.display = 'flex';
+      count.textContent =
+        `${filtered.length} recipe${filtered.length !== 1 ? 's' : ''}` +
+        (activeCat !== 'All' ? ' in ' + activeCat : '');
       grid.innerHTML = filtered.map(buildRecipeCard).join('');
     }
   }
 
-  renderResults();
+  function clearAll() {
+    /* Reset meal type pills */
+    activeCat = 'All';
+    document.querySelectorAll('.pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.cat === 'All');
+    });
+    /* Reset all dropdowns */
+    ['selProtein','selCuisine','selMethod','selTime'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    /* Reset ingredient chips */
+    document.querySelectorAll('.ing-chip').forEach(c => c.classList.remove('sel'));
+    /* Reset results back to prompt state */
+    document.getElementById('resultsGrid').innerHTML = '';
+    document.getElementById('noResults').style.display = 'none';
+    document.getElementById('resultsHeader').style.display = 'none';
+    document.getElementById('promptState').style.display = 'block';
+  }
 </script>
 </body>
 </html>
