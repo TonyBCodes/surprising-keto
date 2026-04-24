@@ -36,7 +36,7 @@
 <div style="background:var(--gray-100);border-bottom:1px solid var(--border);padding:1rem 0;">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;">
-      <div><div style="font-size:1.75rem;font-weight:700;color:var(--green);">160+</div><div style="font-size:0.8rem;color:var(--text-muted);">Recipes</div></div>
+      <div><div style="font-size:1.75rem;font-weight:700;color:var(--green);" id="statRecipeCount">—</div><div style="font-size:0.8rem;color:var(--text-muted);">Recipes</div></div>
       <div><div style="font-size:1.75rem;font-weight:700;color:var(--green);">20+</div><div style="font-size:0.8rem;color:var(--text-muted);">Cuisines</div></div>
       <div><div style="font-size:1.75rem;font-weight:700;color:var(--green);">20 lbs</div><div style="font-size:0.8rem;color:var(--text-muted);">Lost and kept off</div></div>
       <div><div style="font-size:1.75rem;font-weight:700;color:var(--green);">&lt;20g</div><div style="font-size:0.8rem;color:var(--text-muted);">Net carbs daily</div></div>
@@ -52,7 +52,7 @@
     <p style="margin-bottom:1.5rem;">A few favorites from across our full collection.</p>
     <div class="recipe-grid" id="featuredRecipes"></div>
     <div style="text-align:center;margin-top:2rem;">
-      <a href="/recipes/" class="btn btn-outline">Browse all 160+ recipes</a>
+      <a href="/recipes/" class="btn btn-outline" id="browseAllBtn">Browse all recipes</a>
     </div>
   </div>
 </section>
@@ -134,27 +134,48 @@
   renderFooter();
   renderSubscribeInline('homeSubscribe', 'home');
 
-  /* Featured recipes — show first 3 from data */
+  /* ---- Dynamic recipe count throughout ---- */
+  const totalRecipes = RECIPES.length;
+
+  /* Update stats bar */
+  document.getElementById('statRecipeCount').textContent = totalRecipes;
+
+  /* Update Browse All button */
+  document.getElementById('browseAllBtn').textContent =
+    'Browse all ' + totalRecipes + ' recipe' + (totalRecipes !== 1 ? 's' : '');
+
+  /* Featured recipes — show up to 3 from data */
   const featured = RECIPES.slice(0, 3);
   document.getElementById('featuredRecipes').innerHTML = featured.map(buildRecipeCard).join('');
 
-  /* Cuisine grid */
-  const cuisines = [
-    { name: 'Mediterranean', count: 32, q: 'Mediterranean' },
-    { name: 'West African', count: 12, q: 'West African' },
-    { name: 'North African', count: 10, q: 'North African' },
-    { name: 'East African', count: 8, q: 'East African' },
-    { name: 'Cajun / Creole', count: 9, q: 'Cajun / Creole' },
-    { name: 'Soul Food', count: 8, q: 'Soul Food' },
-    { name: 'BBQ', count: 10, q: 'BBQ' },
-    { name: 'Greek', count: 12, q: 'Greek' },
-    { name: 'Spanish', count: 8, q: 'Spanish' },
+  /* Cuisine grid — count dynamically from RECIPES array */
+  const cuisineNames = [
+    { name: 'Mediterranean', q: 'Mediterranean' },
+    { name: 'West African',  q: 'West African'  },
+    { name: 'North African', q: 'North African' },
+    { name: 'East African',  q: 'East African'  },
+    { name: 'Cajun / Creole', q: 'Cajun / Creole' },
+    { name: 'Soul Food',     q: 'Soul Food'     },
+    { name: 'BBQ',           q: 'BBQ'           },
+    { name: 'Greek',         q: 'Greek'         },
+    { name: 'Spanish',       q: 'Spanish'       },
   ];
 
-  document.getElementById('cuisineGrid').innerHTML = cuisines.map(c => `
-    <a href="/recipes/?cuisine=${encodeURIComponent(c.q)}" class="card" style="text-align:center;text-decoration:none;padding:1rem;">
+  /* Count actual recipes per cuisine from data.js */
+  const cuisinesWithCounts = cuisineNames
+    .map(c => ({
+      ...c,
+      count: RECIPES.filter(r => r.cuisine === c.q).length,
+    }))
+    .filter(c => c.count > 0); /* Only show cuisines that have recipes */
+
+  document.getElementById('cuisineGrid').innerHTML = cuisinesWithCounts.map(c => `
+    <a href="/recipes/?cuisine=${encodeURIComponent(c.q)}" class="card"
+       style="text-align:center;text-decoration:none;padding:1rem;">
       <div style="font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:3px;">${c.name}</div>
-      <div style="font-size:0.75rem;color:var(--text-muted);">${c.count} recipes</div>
+      <div style="font-size:0.75rem;color:var(--text-muted);">
+        ${c.count} recipe${c.count !== 1 ? 's' : ''}
+      </div>
     </a>
   `).join('');
 </script>
