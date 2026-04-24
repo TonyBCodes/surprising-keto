@@ -6,6 +6,7 @@
 function renderNav(activePage) {
   const nav = [
     { href: '/recipes/', label: 'Recipes' },
+    { href: '/meal-planner/', label: 'Meal Planner' },
     { href: '/blog/', label: 'Blog' },
     { href: '/submit/', label: 'Submit a Recipe' },
     { href: '/about/', label: 'Our Story' },
@@ -112,7 +113,7 @@ async function inlineSubscribe(containerId) {
   if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
 
   try {
-    await submitSubscriber({ first_name: name, email });
+    await submitSubscriber({ name, email });
     document.getElementById(`subRow_${containerId}`).style.display = 'none';
     showAlert(`subSuccess_${containerId}`);
   } catch (e) {
@@ -135,8 +136,8 @@ async function footerSubscribe() {
 
 /* ---------- Supabase Integration ---------- */
 // Replace these with your actual Supabase project URL and anon key after setup
-const SUPABASE_URL  = 'https://oukuxzpnqhijhfqxidhw.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91a3V4enBucWhpamhmcXhpZGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MzI1MTEsImV4cCI6MjA5MjIwODUxMX0.wMaWAKcTXyvHWv4ZpxlwQGZ2ZvTrLu8uiVsM2Pijhy0';
+const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
 
 async function supabaseFetch(path, options = {}) {
   const url = `${SUPABASE_URL}/rest/v1/${path}`;
