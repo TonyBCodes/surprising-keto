@@ -174,12 +174,36 @@
     const method  = document.getElementById('selMethod').value;
     const time    = document.getElementById('selTime').value;
 
+    /* Collect all selected ingredient chips as lowercase strings */
+    const selectedIngs = [...document.querySelectorAll('.ing-chip.sel')]
+      .map(c => c.textContent.trim().toLowerCase());
+
     let filtered = RECIPES.filter(r => {
+      /* Meal type */
       if (activeCat !== 'All' && !(r.category || []).includes(activeCat)) return false;
+
+      /* Protein */
       if (protein && r.protein !== protein) return false;
+
+      /* Cuisine */
       if (cuisine && r.cuisine !== cuisine) return false;
-      if (method  && !(r.methods || []).includes(method)) return false;
-      if (time    && r.time !== time) return false;
+
+      /* Cooking method */
+      if (method && !(r.methods || []).includes(method)) return false;
+
+      /* Time */
+      if (time && r.time !== time) return false;
+
+      /* Ingredient chips — recipe must contain every selected ingredient
+         somewhere in its ingredient list item text */
+      if (selectedIngs.length > 0) {
+        const ingText = (r.ingredients || [])
+          .map(i => (i.item || '').toLowerCase())
+          .join(' ');
+        const allMatch = selectedIngs.every(ing => ingText.includes(ing));
+        if (!allMatch) return false;
+      }
+
       return true;
     });
 
