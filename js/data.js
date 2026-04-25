@@ -1,6 +1,6 @@
 /* ============================================================
    data.js - Recipe database
-   Generated: Friday, April 25, 2026 - Eastern Time
+   Generated: Friday, April 24, 2026 - Eastern Time
    This file is auto-generated - do not edit manually
    
    FINAL MERGE HISTORY:
@@ -94,7 +94,7 @@ const RECIPES = [
     notes: [
       'Calamari has two texture windows: very quick (2-3 min) or long and',
       'The initial high-heat sear then removal technique prevents',
-      'Source fresh or frozen calamari from HMart — quality matters for',
+      'Source fresh or frozen calamari from an Asian specialty market — quality matters for',
       'The Alexandrian spice profile (cumin + coriander + garlic) is',
     ],
     sides: [],
@@ -476,8 +476,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'beef-kebabs-day-7-dinner---jan-24',
-    title: 'BEEF KEBABS (DAY 7 DINNER - JAN 24)',
+    id: 'beef-kebabs',
+    title: 'BEEF KEBABS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -634,8 +634,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'braised-short-ribs-day-10-dinner---jan-27',
-    title: 'BRAISED SHORT RIBS (DAY 10 DINNER - JAN 27)',
+    id: 'braised-short-ribs',
+    title: 'BRAISED SHORT RIBS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -692,7 +692,7 @@ const RECIPES = [
     id: 'bulletproof-coffee-with-mct-oil',
     title: 'BULLETPROOF COFFEE WITH MCT OIL',
     description: '',
-    category: ["Lunch"],
+    category: ["Breakfast"],
     cuisine: 'Mediterranean',
     protein: '',
     methods: ["Stovetop"],
@@ -704,9 +704,8 @@ const RECIPES = [
     yeast_flag: false,
     ingredients: [
       { qty: '', item: '16 oz hot black coffee (freshly brewed)' },
-      { qty: '', item: '2 tbsp unsalted butter (preferably grass-fed)' },
+      { qty: '', item: '1 tbsp unsalted butter (preferably grass-fed)' },
       { qty: '', item: '1 tbsp MCT oil (caprylic/capric acid blend)' },
-      { qty: '', item: 'Pinch of sea salt (optional)' },
     ],
     substitutes: [],
     steps: {
@@ -832,7 +831,7 @@ const RECIPES = [
     carb_breakdown: [],
     notes: [
       'Discard any clams that don\'t open',
-      'Fresh clams from HMart — buy same day as cooking',
+      'Fresh clams from an Asian specialty market — buy same day as cooking',
       'The wine marinade becomes the sauce — don\'t discard it',
       'Skip potatoes completely — not needed with this combination',
     ],
@@ -988,8 +987,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'chicken-shawarma-bowl-day-6-lunch---jan-24',
-    title: 'CHICKEN SHAWARMA BOWL (DAY 6 LUNCH - JAN 24)',
+    id: 'chicken-shawarma-bowl',
+    title: 'CHICKEN SHAWARMA BOWL',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -1590,7 +1589,7 @@ const RECIPES = [
     },
     carb_breakdown: [],
     notes: [
-      'Fresh sardines from HMart — buy same day as cooking',
+      'Fresh sardines from an Asian specialty market — buy same day as cooking',
       'The simplicity is the point — no marinade, no sauce needed',
       'Sardines are an electrolyte powerhouse: omega-3s, sodium, magnesium',
       'This is a summer grilling ritual — best eaten outdoors',
@@ -1632,7 +1631,7 @@ const RECIPES = [
     },
     carb_breakdown: [],
     notes: [
-      'Rabbit available at HMart or specialty butchers — order in advance',
+      'Rabbit available at an Asian specialty market or specialty butchers — order in advance',
       'The wine marinade tenderizes and flavors simultaneously',
       'This is a communal dish — make double and serve with roasted',
       'Fenkata is traditionally eaten with potatoes — serve over',
@@ -1724,8 +1723,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'greek-chicken-souvlaki-day-3---jan-21',
-    title: 'GREEK CHICKEN SOUVLAKI (DAY 3 - JAN 21)',
+    id: 'greek-chicken-souvlaki',
+    title: 'GREEK CHICKEN SOUVLAKI',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -1773,8 +1772,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'greek-meatballs-day-9-lunch---jan-26',
-    title: 'GREEK MEATBALLS (DAY 9 LUNCH - JAN 26)',
+    id: 'greek-meatballs',
+    title: 'GREEK MEATBALLS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -2056,8 +2055,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'grilled-lamb-chops-with-baba-ganoush-day-13-dinner---jan-31',
-    title: 'GRILLED LAMB CHOPS WITH BABA GANOUSH (DAY 13 DINNER - JAN 31)',
+    id: 'grilled-lamb-chops-with-baba-ganoush',
+    title: 'GRILLED LAMB CHOPS WITH BABA GANOUSH',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -2292,8 +2291,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'grilled-ribeye-with-chimichurri-day-15-dinner---feb-1',
-    title: 'GRILLED RIBEYE WITH CHIMICHURRI (DAY 15 DINNER - FEB 1)',
+    id: 'grilled-ribeye-with-chimichurri',
+    title: 'GRILLED RIBEYE WITH CHIMICHURRI',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -2520,8 +2519,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'herb-crusted-lamb-chops-day-1-dinner---jan-19',
-    title: 'HERB-CRUSTED LAMB CHOPS (DAY 1 DINNER - JAN 19)',
+    id: 'herb-crusted-lamb-chops',
+    title: 'HERB-CRUSTED LAMB CHOPS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -2625,8 +2624,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'herb-roasted-chicken-thighs-day-6-dinner---jan-24',
-    title: 'HERB-ROASTED CHICKEN THIGHS (DAY 6 DINNER - JAN 24)',
+    id: 'herb-roasted-chicken-thighs',
+    title: 'HERB-ROASTED CHICKEN THIGHS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -3050,7 +3049,7 @@ const RECIPES = [
     notes: [
       'Do not overcook — lamb chops are best at medium-rare (135°F)',
       'High heat is essential for the crust',
-      'Wild Fork or specialty butcher for best quality chops',
+      'A specialty butcher or premium meat supplier is best for best quality chops',
     ],
     sides: [],
   },
@@ -3168,7 +3167,7 @@ const RECIPES = [
     carb_breakdown: [],
     notes: [
       'Traditional Bairrada technique: no olive oil — lard only creates the',
-      'Whole suckling pig: order from Wild Fork or specialty butcher well',
+      'Whole suckling pig: order from a specialty butcher or premium meat supplier well',
       'Substitute: same paste technique on skin-on pork belly gives',
       'Pairs with roasted vegetables and Portuguese green wine (sparkling',
     ],
@@ -3403,8 +3402,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'moroccan-chicken-thighs-day-12-dinner---jan-30',
-    title: 'MOROCCAN CHICKEN THIGHS (DAY 12 DINNER - JAN 30)',
+    id: 'moroccan-chicken-thighs',
+    title: 'MOROCCAN CHICKEN THIGHS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -3494,8 +3493,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'moroccan-spiced-lamb-meatballs-with-tahini-sauce-day-4-dinner---jan-22',
-    title: 'MOROCCAN-SPICED LAMB MEATBALLS WITH TAHINI SAUCE (DAY 4 DINNER - JAN 22)',
+    id: 'moroccan-spiced-lamb-meatballs-with-tahini-sauce',
+    title: 'MOROCCAN-SPICED LAMB MEATBALLS WITH TAHINI SAUCE',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -3763,7 +3762,7 @@ const RECIPES = [
       'Skin scoring is critical for crackling — use a sharp knife or box',
       'Wild fennel fronds provide a more intense, floral anise note than',
       'The smoke infuses the fat layers — this is worth the effort for',
-      'Order pork belly from Wild Fork or Asian market (HMart)',
+      'Order pork belly from a specialty butcher or Asian market',
     ],
     sides: [],
   },
@@ -3821,7 +3820,7 @@ const RECIPES = [
     skill: 'Easy',
     yeast_flag: false,
     ingredients: [
-      { qty: '', item: '2 Presa Ibérica pieces (8-10 oz each) — from Wild Fork' },
+      { qty: '', item: '2 Presa Ibérica pieces (8-10 oz each) — from a specialty butcher' },
       { qty: '', item: 'Coarse salt, black pepper' },
       { qty: '', item: '2 cloves garlic, sliced (for scoring)' },
       { qty: '', item: 'Fresh rosemary' },
@@ -3839,7 +3838,7 @@ const RECIPES = [
     carb_breakdown: [],
     notes: [
       'Distinct from Secreto — the Presa has more body and stands up to',
-      'Wild Fork carries both cuts — order together',
+      'A specialty butcher carries both cuts — order together',
       'Pairs perfectly with Escalivada from this section',
     ],
     sides: [],
@@ -3980,7 +3979,7 @@ const RECIPES = [
     skill: 'Easy',
     yeast_flag: false,
     ingredients: [
-      { qty: '', item: '2 smoked herring fillets (renga) — from HMart or specialty fish' },
+      { qty: '', item: '2 smoked herring fillets (renga) — from an Asian specialty market or specialty fish market' },
       { qty: '', item: '3 tbsp tahini' },
       { qty: '', item: '2 tbsp lemon juice' },
       { qty: '', item: '1/4 red onion, very finely diced' },
@@ -4002,7 +4001,7 @@ const RECIPES = [
     },
     carb_breakdown: [],
     notes: [
-      'Renga (smoked herring) available at HMart, Egyptian/Middle Eastern',
+      'Renga (smoked herring) available at Asian specialty markets, Egyptian/Middle Eastern',
       'Rinse the herring well — the saltiness of smoked herring can be',
       'This is a naturally high-fat, very low-carb dish — exceptional keto',
       'Excellent as part of a mezze board alongside olives, hard-boiled',
@@ -4224,7 +4223,7 @@ const RECIPES = [
     skill: 'Easy',
     yeast_flag: false,
     ingredients: [
-      { qty: '', item: '2 Secreto Ibérico pieces (6-8 oz each) — from Wild Fork' },
+      { qty: '', item: '2 Secreto Ibérico pieces (6-8 oz each) — from a specialty butcher' },
       { qty: '', item: 'Coarse sea salt' },
       { qty: '', item: 'Smoked paprika (optional)' },
       { qty: '', item: 'Extra virgin olive oil' },
@@ -4242,7 +4241,7 @@ const RECIPES = [
     },
     carb_breakdown: [],
     notes: [
-      'This cut is available from Wild Fork — order with Wild Fork + Sam\'s',
+      'This cut is available from a specialty butcher — order together with your meat supplier + Sam\'s',
       'Cook to medium (145°F) — do not overcook the fat',
       'The extraordinary fat marbling is what makes this worth the cost',
       'Simplicity is correct — do not over-season or sauce this cut',
@@ -4486,8 +4485,8 @@ const RECIPES = [
     sides: [],
   },
   {
-    id: 'souvlaki-wraps-day-15-lunch---feb-2',
-    title: 'SOUVLAKI WRAPS (DAY 15 LUNCH - FEB 2)',
+    id: 'souvlaki-wraps',
+    title: 'SOUVLAKI WRAPS',
     description: '',
     category: ["Dinner"],
     cuisine: 'Mediterranean',
@@ -4737,7 +4736,7 @@ const RECIPES = [
     carb_breakdown: [],
     notes: [
       '⚠ Check merguez label for yeast extract — some commercial brands',
-      'Source halal merguez from HMart for quality',
+      'Source halal merguez from an Asian specialty market or specialty butcher for quality',
       'Harissa level can be adjusted to taste',
     ],
     sides: [],
@@ -4805,7 +4804,7 @@ const RECIPES = [
       'Swordfish must be very fresh or best quality frozen — texture is',
       'Don\'t overfill — rolling becomes impossible with too much stuffing',
       'The goat cheese melts inside creating a creamy center',
-      'HMart or Wild Fork for quality swordfish steaks',
+      'A specialty butcher or Asian specialty market carry quality swordfish steaks',
     ],
     sides: [],
   },
